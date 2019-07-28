@@ -2,6 +2,7 @@ package twitter.test;
 
 import org.junit.jupiter.api.Test;
 import twitter.PlaybackTwitterSource;
+import twitter.TwitterSource;
 import twitter4j.Status;
 
 import java.util.HashSet;
@@ -21,6 +22,7 @@ public class TestPlaybackTwitterSource {
         PlaybackTwitterSource source = new PlaybackTwitterSource(1.0);
         TestObserver to = new TestObserver();
         // TODO: Once your TwitterSource class implements Observable, you must add the TestObserver as an observer to it here
+        source.addObserver(to);
         source.setFilterTerms(set("food"));
         pause(3 * 1000);
         assertTrue(to.getNTweets() > 0, "Expected getNTweets() to be > 0, was " + to.getNTweets());
@@ -61,5 +63,7 @@ public class TestPlaybackTwitterSource {
         public int getNTweets() {
             return nTweets;
         }
+
+
     }
 }
