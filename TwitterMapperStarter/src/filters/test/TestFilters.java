@@ -29,6 +29,48 @@ public class TestFilters {
         assertTrue(f.matches(makeStatus("red Skelton")));
     }
 
+    @Test
+    public void testAnd() {
+        Filter f = new AndFilter(new BasicFilter("fre"), new BasicFilter("fre"));
+        assertTrue(f.matches(makeStatus("Fred Flintstone")));
+        assertTrue(f.matches(makeStatus("fred Flintstone")));
+        assertFalse(f.matches(makeStatus("Red Skelton")));
+        assertFalse(f.matches(makeStatus("red Skelton")));
+
+        Filter f2 = new AndFilter(new BasicFilter("Fred"), new BasicFilter("Marc"));
+        assertFalse(f2.matches(makeStatus("Fred Flintstone")));
+        assertFalse(f2.matches(makeStatus("fred Flintstone")));
+        assertFalse(f2.matches(makeStatus("Red Skelton")));
+        assertFalse(f2.matches(makeStatus("red Skelton")));
+
+        Filter f3 = new AndFilter(new BasicFilter("red"), new BasicFilter("red"));
+        assertTrue(f3.matches(makeStatus("Fred Flintstone")));
+        assertTrue(f3.matches(makeStatus("fred Flintstone")));
+        assertTrue(f3.matches(makeStatus("Red Skelton")));
+        assertTrue(f3.matches(makeStatus("red Skelton")));
+
+        Filter f4 = new AndFilter(new BasicFilter("douni"), new BasicFilter("matis"));
+        assertTrue(f4.toString().equals("(douni and matis)"));
+
+
+    }
+
+
+    @Test
+    public void testOr() {
+        Filter f = new OrFilter(new BasicFilter("zzzz"), new BasicFilter("Fred"));
+        assertTrue(f.matches(makeStatus("Fred Flintstone")));
+        assertTrue(f.matches(makeStatus("fred Flintstone")));
+        assertFalse(f.matches(makeStatus("Red Skelton")));
+        assertFalse(f.matches(makeStatus("red Skelton")));
+
+        Filter f2 = new OrFilter(new BasicFilter("fred"), new BasicFilter("zzzz"));
+        assertTrue(f2.matches(makeStatus("Fred Flintstone")));
+        assertTrue(f2.matches(makeStatus("fred Flintstone")));
+        assertFalse(f2.matches(makeStatus("Red Skelton")));
+        assertFalse(f2.matches(makeStatus("red Skelton")));
+    }
+
     private Status makeStatus(String text) {
         return new Status() {
             @Override
