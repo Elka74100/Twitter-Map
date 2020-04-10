@@ -21,7 +21,7 @@ public class TestPlaybackTwitterSource {
     public void testSetup() {
         PlaybackTwitterSource source = new PlaybackTwitterSource(1.0);
         TestObserver to = new TestObserver();
-        // TODO: Once your TwitterSource class implements Observable, you must add the TestObserver as an observer to it here
+        // TO DO: Once your TwitterSource class implements Observable, you must add the TestObserver as an observer to it here
         source.addObserver(to);
         source.setFilterTerms(set("food"));
         pause(3 * 1000);

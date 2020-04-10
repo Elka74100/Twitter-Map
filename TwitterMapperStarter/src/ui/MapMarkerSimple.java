@@ -15,4 +15,6 @@ public class MapMarkerSimple extends MapMarkerCircle {
         setColor(Color.BLACK);
         setBackColor(defaultColor);
     }
+
+
 }

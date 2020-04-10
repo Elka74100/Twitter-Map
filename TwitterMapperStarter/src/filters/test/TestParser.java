@@ -20,7 +20,7 @@ public class TestParser {
     public void testNot() throws SyntaxError {
         Filter f = new Parser("not trump").parse();
         assertTrue(f instanceof NotFilter);
-     //   assertTrue(((BasicFilter)f).getWord().equals(" not trump"));
+     //   assertTrue(((BasicFilter)f).getWord().equals("not trump"));
     }
 
     @Test
