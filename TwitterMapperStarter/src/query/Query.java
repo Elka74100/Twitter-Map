@@ -14,9 +14,10 @@ import java.util.Observer;
 import twitter4j.GeoLocation;
 import twitter4j.Status;
 
+import twitter4j.User;
 import ui.MapMarkerSimple;
+import ui.PrettyMapMarker;
 //import util.Util;
-
 
 
 /**
@@ -37,8 +38,10 @@ public class Query implements Observer {
     // The checkBox in the UI corresponding to this query (so we can turn it on and off and delete it)
     private JCheckBox checkBox;
 
-    private MapMarkerSimple mapMarkerSimple;
-//    public Util util;
+  //  private MapMarkerSimple mapMarkerSimple;
+    private PrettyMapMarker prettyMapMarker;
+  //  public Util util;
+
 
 
     public Color getColor() { return color; }
@@ -69,7 +72,6 @@ public class Query implements Observer {
         return new Coordinate(newLat, newLon);
     }
 
-
     public Query(String queryString, Color color, JMapViewer map) {
         this.queryString = queryString;
         this.filter = Filter.parse(queryString);
@@ -86,10 +88,10 @@ public class Query implements Observer {
     /**
      * This query is no longer interesting, so terminate it and remove all traces of its existence.
      *
-     * TODO: Implement this method
+     * TO DO: Implement this method
      */
     public void terminate() {
-        map.removeAllMapMarkers();
+        setVisible(false);
     }
 
 
@@ -97,20 +99,19 @@ public class Query implements Observer {
     public void update(Observable o, Object arg) {
         // get object from observable
         Status s = (Status) arg;
+        // check whether the query matches a tweet
         Boolean matches = filter.matches(s);
         if(matches) {
             // get coordinate from from object
             Coordinate coord = statusCoordinate(s);
             // create a marker
-            mapMarkerSimple = new MapMarkerSimple(getLayer(), coord);
+            //mapMarkerSimple = new MapMarkerSimple(getLayer(), coord);
+            User user = s.getUser();
+            String profileImageURL = user.getProfileImageURL();
+            prettyMapMarker = new PrettyMapMarker(getLayer(), coord, getColor(), profileImageURL );
             // add the marker on the map
-            map.addMapMarker(mapMarkerSimple);
-
+            // map.addMapMarker(mapMarkerSimple);
+            map.addMapMarker(prettyMapMarker);
         }
-
     }
-
-
-
-
 }

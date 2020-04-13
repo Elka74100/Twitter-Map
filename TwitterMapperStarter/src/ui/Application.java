@@ -197,6 +197,6 @@ public class Application extends JFrame {
         Set<String> allterms = getQueryTerms();
         twitterSource.setFilterTerms(allterms);
         twitterSource.deleteObserver(query);
-
     }
+
 }
