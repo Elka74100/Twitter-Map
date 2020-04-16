@@ -2,9 +2,6 @@ package filters;
 
 
 import twitter4j.Status;
-
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class AndFilter implements Filter {
@@ -19,7 +16,6 @@ public class AndFilter implements Filter {
     @Override
     public boolean matches(Status s) {
         return (child1.matches(s) && child2.matches(s));
-       // return (child1.matches(s));
     }
 
     @Override

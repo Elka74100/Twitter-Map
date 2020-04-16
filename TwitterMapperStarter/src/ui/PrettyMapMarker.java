@@ -13,14 +13,27 @@ public class PrettyMapMarker extends MapMarkerCircle {
     public static final double defaultMarkerSize = 17.0;
     public Util util;
     public BufferedImage img1;
+    public String tweet1;
+    public String profileImageUrl;
 
-
-    public PrettyMapMarker(Layer layer, Coordinate coord, Color color, String profileImageURL) {
+    public PrettyMapMarker(Layer layer, Coordinate coord, Color color, String profileImageURL, String tweet) {
         super(layer, null, coord, defaultMarkerSize, STYLE.FIXED, getDefaultStyle());
         setColor(Color.BLACK);
         setBackColor(color);
         img1 = util.imageFromURL(profileImageURL);
+        tweet1 = tweet;
+        profileImageUrl = profileImageURL;
     }
+
+    public String getTweet() {
+        return this.tweet1;
+    }
+
+    public String getProfileImageUrl() {
+        return this.profileImageUrl;
+    }
+
+
 
     @Override
     public void paint(Graphics g, Point position, int radius) {

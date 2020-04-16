@@ -11,13 +11,11 @@ import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
-import twitter4j.GeoLocation;
 import twitter4j.Status;
 
 import twitter4j.User;
-import ui.MapMarkerSimple;
 import ui.PrettyMapMarker;
-//import util.Util;
+import util.Util;
 
 
 /**
@@ -37,11 +35,10 @@ public class Query implements Observer {
     private final Filter filter;
     // The checkBox in the UI corresponding to this query (so we can turn it on and off and delete it)
     private JCheckBox checkBox;
-
-  //  private MapMarkerSimple mapMarkerSimple;
+    // The marker on the map
+    //private MapMarkerSimple mapMarkerSimple;
     private PrettyMapMarker prettyMapMarker;
-  //  public Util util;
-
+    public Util util;
 
 
     public Color getColor() { return color; }
@@ -51,26 +48,15 @@ public class Query implements Observer {
     public Filter getFilter() {
         return filter;
     }
-    public Layer getLayer() {
-        return layer;
-    }
+    public Layer getLayer() { return layer; }
     public JCheckBox getCheckBox() {
         return checkBox;
     }
     public void setCheckBox(JCheckBox checkBox) {
         this.checkBox = checkBox;
     }
-    public void setVisible(boolean visible) {
-        layer.setVisible(visible);
-    }
+    public void setVisible(boolean visible) { layer.setVisible(visible);}
     public boolean getVisible() { return layer.isVisible(); }
-    public static Coordinate statusCoordinate(Status status) {
-        GeoLocation bottomRight = status.getPlace().getBoundingBoxCoordinates()[0][0];
-        GeoLocation topLeft = status.getPlace().getBoundingBoxCoordinates()[0][2];
-        double newLat = (bottomRight.getLatitude() + topLeft.getLatitude())/2;
-        double newLon = (bottomRight.getLongitude() + topLeft.getLongitude())/2;
-        return new Coordinate(newLat, newLon);
-    }
 
     public Query(String queryString, Color color, JMapViewer map) {
         this.queryString = queryString;
@@ -91,9 +77,9 @@ public class Query implements Observer {
      * TO DO: Implement this method
      */
     public void terminate() {
-        setVisible(false);
+       setVisible(false);
+       map.removeMapMarker(prettyMapMarker);
     }
-
 
     @Override
     public void update(Observable o, Object arg) {
@@ -103,12 +89,13 @@ public class Query implements Observer {
         Boolean matches = filter.matches(s);
         if(matches) {
             // get coordinate from from object
-            Coordinate coord = statusCoordinate(s);
+            Coordinate coord = util.statusCoordinate(s);
             // create a marker
             //mapMarkerSimple = new MapMarkerSimple(getLayer(), coord);
             User user = s.getUser();
             String profileImageURL = user.getProfileImageURL();
-            prettyMapMarker = new PrettyMapMarker(getLayer(), coord, getColor(), profileImageURL );
+            String tweet = s.getText();
+            prettyMapMarker = new PrettyMapMarker(getLayer(), coord, getColor(), profileImageURL, tweet);
             // add the marker on the map
             // map.addMapMarker(mapMarkerSimple);
             map.addMapMarker(prettyMapMarker);

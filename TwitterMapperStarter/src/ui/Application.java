@@ -34,9 +34,10 @@ public class Application extends JFrame {
     // The source of tweets, a TwitterSource, either live or playback
     private TwitterSource twitterSource;
 
+
     private void initialize() {
         // To use the live twitter stream, use the following line
-        // twitterSource = new LiveTwitterSource();
+      //   twitterSource = new LiveTwitterSource();
 
         // To use the recorded twitter stream, use the following line
         // The number passed to the constructor is a speedup value:
@@ -125,11 +126,19 @@ public class Application extends JFrame {
             public void mouseMoved(MouseEvent e) {
                 Point p = e.getPoint();
                 ICoordinate pos = map().getPosition(p);
-                // TODO: Use the following method to set the text that appears at the mouse cursor
-                map().setToolTipText("This is a tooltip");
+                // TO DO: Use the following method to set the text that appears at the mouse cursor
+                // map().setToolTipText("This is a tool tip");
+                List<MapMarker> markerList = getMarkersCovering(pos, pixelWidth(p));
+                if(markerList.size()>0) {
+                    MapMarker m = markerList.get(markerList.size() - 1);
+                    String tweet = ((PrettyMapMarker)m).getTweet();
+                    String profileImgUrl = ((PrettyMapMarker)m).getProfileImageUrl();
+                    map().setToolTipText("<html><img src="+ profileImgUrl +" height=\"42\" width=\"42\">"+ tweet + markerList +"</html>");
+                }
             }
         });
     }
+
 
     // How big is a single pixel on the map?  We use this to compute which tweet markers
     // are at the current most position.
@@ -198,5 +207,6 @@ public class Application extends JFrame {
         twitterSource.setFilterTerms(allterms);
         twitterSource.deleteObserver(query);
     }
+
 
 }

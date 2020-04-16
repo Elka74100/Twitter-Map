@@ -18,14 +18,8 @@ public class OrFilter implements Filter{
 
     @Override
     public List<String> terms() {
-
-       // List<String> list1 = child1.terms();
-       // list1.addAll(child2.terms());
-       // return child1.terms();
-
-        return null;
+        return child1.terms();
     }
-
 
 
     public String toString() { return "(" + child1.toString() + " or " + child2.toString() + ")" ; }
